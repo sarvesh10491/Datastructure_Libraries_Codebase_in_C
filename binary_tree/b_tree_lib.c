@@ -10,10 +10,15 @@
 #include <stdlib.h>
 #include <math.h>
 #include "b_tree_lib.h"
+#include "ring_buffer_lib.h"
+
+int buff_nodes = 1024;
+
+ringbuffer fifo_queue_1;
 
 // Binary Tree functions
 //+++++++++++++++++++++++
-binarytree *createBtree()
+binarytree *createTree()
 {
 	struct node *root_node;
 
@@ -28,11 +33,13 @@ binarytree *createBtree()
 
     printf("\nBinary Tree created.\n");
 
+    createBuff(&fifo_queue_1, buff_nodes);  // FIFO queue used for Binary Tree
+
     return new_btree;
 }
 
 
-void destroyBtree(binarytree *btree)
+void destroyTree(binarytree *btree)
 {
 	struct node *leaf = *btree;
 
@@ -44,12 +51,12 @@ void destroyBtree(binarytree *btree)
 
     if(leaf->left != NULL)
     {
-    	destroyBtree(&(leaf->left));
+    	destroyTree(&(leaf->left));
     }
 
     if(leaf->right != NULL)
     {
-    	destroyBtree(&(leaf->right));
+    	destroyTree(&(leaf->right));
     }
 
     free(leaf);
@@ -83,62 +90,35 @@ int nodeCount(binarytree *btree)
 }
 
 
-void insertNode(binarytree *btree, double data)
+int nodeSearchBST(binarytree *btree, double data, void (*print)(double data))
 {
-	struct node *leaf = *btree;
+    struct node *leaf = *btree;
+    int count=1;
 
-	if (leaf->data == INFINITY)		// This is root node
-	{
-    	// printf("Binary Tree is empty. %lf will be the root node.\n", data );
-    	leaf->data = data;
-    }
-        
-
-    // Root node exists hence adding new node to corresponding branch
-    else 
+    if((data < leaf->data) && (leaf->left != NULL))            // Search node to left branch in tree
     {
-        if(data <= leaf->data)	// Add node to left branch in tree
-        {
-        	// printf("Going in left branch of node %lf on Binary Tree.\n", leaf->data);
-        	if(leaf->left == NULL)
-        	{
-        		struct node *new_node;
-				new_node = (struct node *)malloc(sizeof (struct node));
-
-				leaf->left = new_node;
-				new_node->data = data;
-				new_node->left = NULL;
-				new_node->right = NULL;
-				// printf("Added new node %lf.\n", data);
-        	}
-        	else
-        	{
-        		// printf("Already node %lf present on this side on branch.\n", leaf->left->data);
-        		insertNode(&(leaf->left), data);
-        	}
-        }
-
-        else					// Add node to right branch in tree
-        {
-        	// printf("Going in right branch of node %lf on Binary Tree.\n", leaf->data);
-        	if(leaf->right == NULL)
-        	{
-        		struct node *new_node;
-				new_node = (struct node *)malloc(sizeof (struct node));
-
-				leaf->right = new_node;
-				new_node->data = data;
-				new_node->left = NULL;
-				new_node->right = NULL;
-				// printf("Added new node %lf.\n", data);
-        	}
-        	else
-        	{
-        		// printf("Already node %lf present on this side on branch.\n", leaf->right->data);
-        		insertNode(&(leaf->right), data);
-        	}
-        }
+        // printf("Going in left branch of node %lf on Binary Tree.\n", leaf->data);
+        count += nodeSearchBST(&(leaf->left), data, print);
     }
+
+    else if((data > leaf->data) && (leaf->right != NULL))      // Search node to right branch in tree
+    {
+        // printf("Going in right branch of node %lf on Binary Tree.\n", leaf->data);
+        count += nodeSearchBST(&(leaf->right), data, print);
+    }
+
+    else if(data == leaf->data)     // Node found in tree
+    {
+        print(leaf->data);
+        count--;
+    }
+
+    else
+    {
+        // printf("Node not present in this Binary Tree.\n");
+        count = -INFINITY;
+    }
+    return count;
 }
 
 
@@ -211,4 +191,116 @@ void printPostorder(binarytree *btree, void (*print)(double data))
     }
 
     print(leaf->data);
+}
+
+
+void insertNodeBST(binarytree *btree, double data)
+{
+    struct node *leaf = *btree;
+
+    if (leaf->data == INFINITY)     // This is root node
+    {
+        // printf("Binary Tree is empty. %lf will be the root node.\n", data );
+        leaf->data = data;
+    }
+        
+
+    // Root node exists hence adding new node to corresponding branch
+    else 
+    {
+        if(data <= leaf->data)  // Add node to left branch in tree
+        {
+            // printf("Going in left branch of node %lf on Binary Tree.\n", leaf->data);
+            if(leaf->left == NULL)
+            {
+                struct node *new_node;
+                new_node = (struct node *)malloc(sizeof (struct node));
+
+                leaf->left = new_node;
+                new_node->data = data;
+                new_node->left = NULL;
+                new_node->right = NULL;
+                // printf("Added new node %lf.\n", data);
+            }
+            else
+            {
+                // printf("Already node %lf present on this side on branch.\n", leaf->left->data);
+                insertNodeBST(&(leaf->left), data);
+            }
+        }
+
+        else                    // Add node to right branch in tree
+        {
+            // printf("Going in right branch of node %lf on Binary Tree.\n", leaf->data);
+            if(leaf->right == NULL)
+            {
+                struct node *new_node;
+                new_node = (struct node *)malloc(sizeof (struct node));
+
+                leaf->right = new_node;
+                new_node->data = data;
+                new_node->left = NULL;
+                new_node->right = NULL;
+                // printf("Added new node %lf.\n", data);
+            }
+            else
+            {
+                // printf("Already node %lf present on this side on branch.\n", leaf->right->data);
+                insertNodeBST(&(leaf->right), data);
+            }
+        }
+    }
+}
+
+
+
+void insertNodeBFS(binarytree *btree, double data)
+{
+    struct node *leaf = *btree;
+
+    if (leaf->data == INFINITY)     // This is root node
+    {
+        // printf("Binary Tree is empty. %lf will be the root node.\n", data );
+        leaf->data = data;
+    }
+        
+
+    // Root node exists hence adding new node to corresponding branch in BFS order
+    else 
+    {
+        // printf("Going in left branch of node %lf on Binary Tree.\n", leaf->data);
+        if(leaf->left == NULL)
+        {
+            struct node *new_node;
+            new_node = (struct node *)malloc(sizeof (struct node));
+
+            leaf->left = new_node;
+            new_node->data = data;
+            new_node->left = NULL;
+            new_node->right = NULL;
+            // printf("Added new node %lf.\n", data);
+        }
+
+        // printf("Going in right branch of node %lf on Binary Tree.\n", leaf->data);
+        if(leaf->right == NULL)
+        {
+            struct node *new_node;
+            new_node = (struct node *)malloc(sizeof (struct node));
+
+            leaf->right = new_node;
+            new_node->data = data;
+            new_node->left = NULL;
+            new_node->right = NULL;
+            // printf("Added new node %lf.\n", data);
+        }
+
+        // Pushing both left & right node into FIFO queue
+        push(&fifo_queue_1, leaf->left);
+        push(&fifo_queue_1, leaf->right);
+
+        // printf("Already nodes %lf & %lf present on left & right sides of node.\n", leaf->left->data, leaf->right->data);
+        // Popping first node from FIFO queue and checking open slot in node's left & right branches
+        leaf=(struct node *)pop_queue(&fifo_queue_1);
+        insertNodeBFS(&(leaf->left), data);
+    }
 }

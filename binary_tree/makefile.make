@@ -1,8 +1,14 @@
-b_tree_app: b_tree_lib.o main.c
-	gcc -Wall -Wextra b_tree_lib.o main.c -o b_tree_app
+main: main.o ring_buffer_lib.o b_tree_lib.o
+	gcc -o main main.o ring_buffer_lib.o b_tree_lib.o
 
-llist.o: b_tree_lib.h b_tree_lib.c
-	gcc -Wall -Wextra -fPIC b_tree_lib.h -c b_tree_lib.c
+main.o: main.c
+	gcc -c main.c
 
+ring_buffer_lib.o: ring_buffer_lib.c
+	gcc -c ring_buffer_lib.c
+	
+b_tree_lib.o: b_tree_lib.c
+	gcc -c b_tree_lib.c
+	
 clean:
-	rm -rf *.o *.gch b_tree_app
+	rm -f main *.o

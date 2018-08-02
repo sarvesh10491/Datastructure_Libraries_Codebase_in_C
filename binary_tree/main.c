@@ -25,17 +25,51 @@ void myprint(double arg)
 int main()
 {
 	//User defined variables
-	binarytree *btree1=createBtree();
+	int depth;
+
+	binarytree *btree1=createTree();
 	printf("\n");
 
-	insertNode(btree1, 20);
-	insertNode(btree1, 10);
-	insertNode(btree1, 30);
-	insertNode(btree1, 15);
-	insertNode(btree1, 25);
 
-	printf("No. of nodes in tree : %d\n", nodeCount(btree1) );
+	insertNodeBST(btree1, 20);
+	insertNodeBST(btree1, 10);
+	insertNodeBST(btree1, 30);
+	insertNodeBST(btree1, 15);
+	insertNodeBST(btree1, 25);
+	insertNodeBST(btree1, 35);
+	insertNodeBST(btree1, 5);
+	insertNodeBST(btree1, 12);
+	insertNodeBST(btree1, 40);
+
+
+
+	printf("No. of nodes in tree : %d\n", nodeCount(btree1));
 	printf("\n");
+
+
+
+	depth = nodeSearchBST(btree1, 15, myprint);
+	if(depth <= -1)
+		printf("Node %d not present in this Binary Tree.\n", 15);
+	else
+		printf("Node %d present in tree at %d level & traced with above path : \n", 15, depth);
+	printf("\n");
+
+	depth = nodeSearchBST(btree1, 40, myprint);
+	if(depth <= -1)
+		printf("Node %d not present in this Binary Tree.\n", 40);
+	else
+		printf("Node %d present in tree at %d level & traced with above path : \n", 40, depth);
+	printf("\n");
+
+	depth = nodeSearchBST(btree1, 50, myprint);
+	if(depth <= -1)
+		printf("Node %d not present in this Binary Tree.\n", 50);
+	else
+		printf("Node %d present in tree at %d level & traced with above path : \n", 50, depth);
+	printf("\n");
+
+
 
 	printf("Inorder Traversing :");
 	printInorder(btree1, myprint);
@@ -49,7 +83,9 @@ int main()
 	printPostorder(btree1, myprint);
 	printf("\n");
 
-	destroyBtree(btree1);
+
+
+	destroyTree(btree1);
 	printf("\n");
 
 	return 0;
