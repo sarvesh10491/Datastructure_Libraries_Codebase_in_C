@@ -28,11 +28,16 @@ void printBuff(ringbuffer *r_buffer, void (*print)(void *))
 {
 	int i=0;
 	int tracker=r_buffer->start;
+	
     while (i < r_buffer->count) 
     {
         print(r_buffer->node[tracker]);
         printf(" ");
         tracker++;
+        if (tracker >= r_buffer->buff_size) 
+		{
+			tracker = tracker - r_buffer->buff_size;
+		}
         i++;
     }
     printf("\n");
@@ -76,7 +81,7 @@ void push(ringbuffer *r_buffer, void *data)
 		int tracker = r_buffer->start + r_buffer->count++;
 		if (tracker >= r_buffer->buff_size) 
 		{
-			tracker = 0;
+			tracker = tracker - r_buffer->buff_size;
 		}
 		r_buffer->node[tracker] = data;
 	}
@@ -101,7 +106,6 @@ void *pop_queue(ringbuffer *r_buffer)
 		{
 			r_buffer->start = 0;
 		}
-
 		return node;
 	}
 }
@@ -117,10 +121,10 @@ void *pop_stack(ringbuffer *r_buffer)
 	else 
 	{
 		void *node;
-		int tracker = r_buffer->start + r_buffer->count - 1;;
+		int tracker = r_buffer->start + r_buffer->count - 1;
 		if (tracker >= r_buffer->buff_size) 
 		{
-           tracker = r_buffer->count - r_buffer->buff_size - 1;
+           tracker = tracker - r_buffer->buff_size;
         }      
         r_buffer->count--;
 

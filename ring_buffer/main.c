@@ -50,7 +50,9 @@ int main()
 	ringbuffer buff1;
 	struct mynodedata *ndptr;
 
+	printf("\n");
 	createBuff(&buff1, buff_nodes);
+	printf("\n");
 
 	for(int i=0; i<12; i++)
 	{
@@ -59,8 +61,9 @@ int main()
 		ndptr->var2=12+10*i;
 
 		push(&buff1, ndptr);
-		printf("Pushed node ");
+		printf("Pushing node ");
 		mynodeprint(ndptr);
+		printf("\n");
 	}
 
 	printBuff(&buff1, mybuffprint);
@@ -69,37 +72,55 @@ int main()
 	ndptr=(struct mynodedata *)pop_queue(&buff1);
 	printf("Queue popped node ");
 	mynodeprint(ndptr);
+	printf("\n");
 
 	printBuff(&buff1, mybuffprint);
+	printf("\n");
 
 	ndptr=(struct mynodedata *)pop_queue(&buff1);
 	printf("Queue popped node ");
 	mynodeprint(ndptr);
+	printf("\n");
+
 
 	ndptr=(struct mynodedata *)pop_queue(&buff1);
 	printf("Queue popped node ");
 	mynodeprint(ndptr);
+	printf("\n");
 
 	printBuff(&buff1, mybuffprint);
 	printf("\n");
 
 
 
-	ndptr=(struct mynodedata *)pop_stack(&buff1);
-	printf("Stack popped node ");
-	mynodeprint(ndptr);
+	for(int i=0; i<5; i++)
+	{
+		ndptr=(struct mynodedata *)malloc(sizeof(struct mynodedata));
+		ndptr->var1=15+10*i;
+		ndptr->var2=16+10*i;
+
+		push(&buff1, ndptr);
+		printf("Pushing node ");
+		mynodeprint(ndptr);
+		printf("\n");
+	}
 
 	printBuff(&buff1, mybuffprint);
+	printf("\n");
 
 	ndptr=(struct mynodedata *)pop_stack(&buff1);
 	printf("Stack popped node ");
 	mynodeprint(ndptr);
+	printf("\n");
 
 	ndptr=(struct mynodedata *)pop_stack(&buff1);
 	printf("Stack popped node ");
 	mynodeprint(ndptr);
+	printf("\n");
 
+	printf("\n");
 	printBuff(&buff1, mybuffprint);
+	printf("\n");
 
 	return 0;
 }
