@@ -50,10 +50,13 @@ int main()
 	ringbuffer buff1;
 	struct mynodedata *ndptr;
 
+
+	// Buffer created
 	printf("\n");
 	createBuff(&buff1, buff_nodes);
 	printf("\n");
 
+	// Pushed some nodes
 	for(int i=0; i<12; i++)
 	{
 		ndptr=(struct mynodedata *)malloc(sizeof(struct mynodedata));
@@ -69,6 +72,8 @@ int main()
 	printBuff(&buff1, mybuffprint);
 	printf("\n");
 
+
+	// Popped in FIFO queue order
 	ndptr=(struct mynodedata *)pop_queue(&buff1);
 	printf("Queue popped node ");
 	mynodeprint(ndptr);
@@ -92,7 +97,7 @@ int main()
 	printf("\n");
 
 
-
+	// Pushed more nodes
 	for(int i=0; i<5; i++)
 	{
 		ndptr=(struct mynodedata *)malloc(sizeof(struct mynodedata));
@@ -108,6 +113,8 @@ int main()
 	printBuff(&buff1, mybuffprint);
 	printf("\n");
 
+
+	// Popped in LIFO queue order
 	ndptr=(struct mynodedata *)pop_stack(&buff1);
 	printf("Stack popped node ");
 	mynodeprint(ndptr);
@@ -121,6 +128,39 @@ int main()
 	printf("\n");
 	printBuff(&buff1, mybuffprint);
 	printf("\n");
+
+
+	// Flushed buffer nodes
+	printf("\n");
+	flushBuff(&buff1);
+	printf("\n");
+
+	printf("\n");
+	printBuff(&buff1, mybuffprint);
+	printf("\n");
+
+
+	// Pushed more nodes
+	for(int i=0; i<2; i++)
+	{
+		ndptr=(struct mynodedata *)malloc(sizeof(struct mynodedata));
+		ndptr->var1=12+10*i;
+		ndptr->var2=13+10*i;
+
+		push(&buff1, ndptr);
+		printf("Pushing node ");
+		mynodeprint(ndptr);
+		printf("\n");
+	}
+
+	printBuff(&buff1, mybuffprint);
+	printf("\n");
+
+
+	// Destroyed buffer
+	// printf("\n");
+	// destroyBuff(&buff1);
+	// printf("\n");
 
 	return 0;
 }

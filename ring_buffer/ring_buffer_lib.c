@@ -20,8 +20,29 @@ void createBuff(ringbuffer *r_buffer, int buff_size)
 	r_buffer->count = 0;
 	r_buffer->node = malloc(sizeof(r_buffer->node)*buff_size);
 
-	printf("Ring buffer created.\n");
+	printf("Buffer created.\n");
 }
+
+
+void flushBuff(ringbuffer *r_buffer)
+{
+	void *node;
+	while(r_buffer->count != 0)
+	{
+		node = pop_stack(r_buffer);
+	}
+
+	if(is_buffer_empty)
+		printf("Buffer flushed.\n");
+}
+
+
+// void destroyBuff(ringbuffer *r_buffer)
+// {
+// 	free(r_buffer);
+
+// 	printf("Buffer destroyed.\n");
+// }
 
 
 void printBuff(ringbuffer *r_buffer, void (*print)(void *))
@@ -74,7 +95,7 @@ void push(ringbuffer *r_buffer, void *data)
 {
 	if (is_buffer_full(r_buffer)) 
 	{
-		printf("Ring Buffer Overflow\n");
+		printf("Buffer Overflow\n");
 	} 
 	else 
 	{
@@ -92,7 +113,7 @@ void *pop_queue(ringbuffer *r_buffer)
 {
 	if (is_buffer_empty(r_buffer)) 
 	{
-		printf("Ring Buffer Empty\n");
+		printf("Buffer Empty\n");
 		return 0;
 	}
 	else 
@@ -115,7 +136,7 @@ void *pop_stack(ringbuffer *r_buffer)
 {
 	if (is_buffer_empty(r_buffer)) 
 	{
-		printf("Ring Buffer Empty\n");
+		printf("Buffer Empty\n");
 		return 0;
 	}
 	else 
