@@ -1,13 +1,11 @@
 //################################################################################################
 //
-// Program     : Ring buffer library implementation
+// Program     : Ring buffer library interface
 // Source file : ring_buffer_lib.h
 // Author      : Sarvesh Patil
 //
 //################################################################################################
 
-#ifndef RING_BUFFER_LIB_H
-#define RING_BUFFER_LIB_H
 
 // Linked List Node structure
 //============================
@@ -28,6 +26,12 @@ typedef struct ring_buff ringbuffer;
 // Create new Ring buffer
 void createBuff(ringbuffer *r_buffer, int buff_size);
 
+// Flush Ring buffer nodes
+void flushBuff(ringbuffer *r_buffer);
+
+// Destroy Ring buffer nodes
+void destroyBuff(ringbuffer *r_buffer);
+
 // print Ring buffer nodes data calling user-defined print function
 void printBuff(ringbuffer *r_buffer, void (*print)(void *data));
 
@@ -45,5 +49,3 @@ void *pop_queue(ringbuffer *r_buffer);
 
 // Stack pop (LIFO implementation)
 void *pop_stack(ringbuffer *r_buffer);
-
-#endif

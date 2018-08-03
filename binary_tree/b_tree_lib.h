@@ -1,6 +1,6 @@
 //################################################################################################
 //
-// Program     : Binary Tree library implementation
+// Program     : Binary Tree library interface
 // Source file : b_tree_lib.h
 // Author      : Sarvesh Patil
 //

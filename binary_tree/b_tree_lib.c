@@ -260,7 +260,7 @@ void insertNodeBFS(binarytree *btree, double data)
 
     if (leaf->data == INFINITY)     // This is root node
     {
-        // printf("Binary Tree is empty. %lf will be the root node.\n", data );
+        printf("Binary Tree is empty. %lf will be the root node.\n\n", data );
         leaf->data = data;
     }
         
@@ -268,9 +268,10 @@ void insertNodeBFS(binarytree *btree, double data)
     // Root node exists hence adding new node to corresponding branch in BFS order
     else 
     {
-        // printf("Going in left branch of node %lf on Binary Tree.\n", leaf->data);
         if(leaf->left == NULL)
         {
+            // printf("Going in left branch of node %lf on Binary Tree.\n", leaf->data);
+
             struct node *new_node;
             new_node = (struct node *)malloc(sizeof (struct node));
 
@@ -278,12 +279,16 @@ void insertNodeBFS(binarytree *btree, double data)
             new_node->data = data;
             new_node->left = NULL;
             new_node->right = NULL;
-            // printf("Added new node %lf.\n", data);
+            printf("Added new node %lf.\n", data);
+
+            flushBuff(&fifo_queue_1);
+            printf("\n");
         }
 
-        // printf("Going in right branch of node %lf on Binary Tree.\n", leaf->data);
-        if(leaf->right == NULL)
+        else if(leaf->right == NULL)
         {
+            // printf("Going in right branch of node %lf on Binary Tree.\n", leaf->data);
+
             struct node *new_node;
             new_node = (struct node *)malloc(sizeof (struct node));
 
@@ -291,16 +296,24 @@ void insertNodeBFS(binarytree *btree, double data)
             new_node->data = data;
             new_node->left = NULL;
             new_node->right = NULL;
-            // printf("Added new node %lf.\n", data);
+            printf("Added new node %lf.\n", data);
+
+            flushBuff(&fifo_queue_1);
+            printf("\n");
         }
 
         // Pushing both left & right node into FIFO queue
-        push(&fifo_queue_1, leaf->left);
-        push(&fifo_queue_1, leaf->right);
+        else
+        {
+            // printf("Already nodes %lf & %lf present on left & right sides of node.\n", leaf->left->data, leaf->right->data);
+            push(&fifo_queue_1, leaf->left);
+            push(&fifo_queue_1, leaf->right);
+            // printf("Pushed both above nodes on stack.\n");
 
-        // printf("Already nodes %lf & %lf present on left & right sides of node.\n", leaf->left->data, leaf->right->data);
-        // Popping first node from FIFO queue and checking open slot in node's left & right branches
-        leaf=(struct node *)pop_queue(&fifo_queue_1);
-        insertNodeBFS(&(leaf->left), data);
+            // Popping first node from FIFO queue and checking open slot in node's left & right branches
+            leaf=(struct node *)pop_queue(&fifo_queue_1);
+            // printf("Popped node %lf \n", leaf->data);
+            insertNodeBFS(&leaf, data);
+        }
     }
 }

@@ -31,15 +31,15 @@ int main()
 	printf("\n");
 
 
-	insertNodeBST(btree1, 20);
-	insertNodeBST(btree1, 10);
-	insertNodeBST(btree1, 30);
-	insertNodeBST(btree1, 15);
-	insertNodeBST(btree1, 25);
-	insertNodeBST(btree1, 35);
-	insertNodeBST(btree1, 5);
-	insertNodeBST(btree1, 12);
-	insertNodeBST(btree1, 40);
+	insertNodeBFS(btree1, 20);
+	insertNodeBFS(btree1, 10);
+	insertNodeBFS(btree1, 30);
+	insertNodeBFS(btree1, 15);
+	insertNodeBFS(btree1, 25);
+	insertNodeBFS(btree1, 35);
+	insertNodeBFS(btree1, 5);
+	insertNodeBFS(btree1, 12);
+	insertNodeBFS(btree1, 40);
 
 
 
@@ -48,26 +48,26 @@ int main()
 
 
 
-	depth = nodeSearchBST(btree1, 15, myprint);
-	if(depth <= -1)
-		printf("Node %d not present in this Binary Tree.\n", 15);
-	else
-		printf("Node %d present in tree at %d level & traced with above path : \n", 15, depth);
-	printf("\n");
+	// depth = nodeSearchBST(btree1, 15, myprint);
+	// if(depth <= -1)
+	// 	printf("Node %d not present in this Binary Tree.\n", 15);
+	// else
+	// 	printf("Node %d present in tree at %d level & traced with above path : \n", 15, depth);
+	// printf("\n");
 
-	depth = nodeSearchBST(btree1, 40, myprint);
-	if(depth <= -1)
-		printf("Node %d not present in this Binary Tree.\n", 40);
-	else
-		printf("Node %d present in tree at %d level & traced with above path : \n", 40, depth);
-	printf("\n");
+	// depth = nodeSearchBST(btree1, 40, myprint);
+	// if(depth <= -1)
+	// 	printf("Node %d not present in this Binary Tree.\n", 40);
+	// else
+	// 	printf("Node %d present in tree at %d level & traced with above path : \n", 40, depth);
+	// printf("\n");
 
-	depth = nodeSearchBST(btree1, 50, myprint);
-	if(depth <= -1)
-		printf("Node %d not present in this Binary Tree.\n", 50);
-	else
-		printf("Node %d present in tree at %d level & traced with above path : \n", 50, depth);
-	printf("\n");
+	// depth = nodeSearchBST(btree1, 50, myprint);
+	// if(depth <= -1)
+	// 	printf("Node %d not present in this Binary Tree.\n", 50);
+	// else
+	// 	printf("Node %d present in tree at %d level & traced with above path : \n", 50, depth);
+	// printf("\n");
 
 
 
